@@ -1,0 +1,83 @@
+Kevin J. Zheng
+CS-UY 2214 Homework 1
+
+1. VirtualBox installed
+
+2.
+A	B	C	Y
+0	0	0	1
+0	0	1	1
+0	1	1	1
+0	1	0	0
+1	1	0	0
+1	0	1	0
+1	0	0	0
+1	1	1	1
+
+3a. !A + !B
+3b. Y
+3c. A * (B + C + D)
+
+4a. 23 = 00010111
+  i. 00101110 --> 46
+  ii. 00001011 --> 11
+  iii. 00001011 --> 11
+4b. -7 = 11111001
+  i. 11110010 --> -14
+  ii. 01111100 --> 124
+  iii. 11111100 --> -4
+4c. 0 = 00000000
+  i. 00000000 --> 0
+  ii. 00000000 --> 0
+  iii. 00000000 --> 0
+
+5a. 1110 & 0011 --> 0010 = 2
+5B. 1001 | 0011 --> 1011 = 11
+5c. 1000 XOR 1000 --> 0000 = 0
+5d. !0110 --> 1001 = 9
+
+6. 21 --> 210
+
+7. In the diagram I drew, the A represents the n-bit binary representation of the
+  number that is going to be multiplied by 5. That binary number will then be used
+  two ways in which both will end up in the adder. But the top portion of the circuit
+  is utilizing the zero extend. By passing in a binary number of n bits and extending
+  it by 2 bits it allows for two left logical shifts which essentially increases the
+  binary number by a power of 2 twice or essentially a factor of 4. Then that newly
+  acquired number added to the original number are inputs of a full adder and the
+  result would be the sum that which is the output of the full adder. I came upon
+  this solution as I was writing out multiplication of binary numbers I realized
+  that when multiplying any number by 5 or 101 in binary its adding numbers of the
+  numbers in each position of the binary number so for example,
+              10101   --> 21                 101  --> 5
+            x   101   --> 5              x   101  --> 5
+              10101                          101
+             000000               or        000
+            1010100                        101
+            1101001   --> 105              11001  --> 25
+  as seen the same binary number but two extra zeros on the lesser significant end
+  of the binary number. I simply replicated this behavior with the zero extend and
+  shifters in the circuit to get a multiplier of a factor of 5.
+
+8a. 53 --> 00110101
+8b. -53 --> 11001011
+8c. -77 --> 10110011
+8d. -12 --> 11110100
+
+9a. 01111111 --> 127
+9b. 10111111 --> -65
+9c. 11011111 --> -33
+9d. 01010101 --> 85
+
+10a. FF
+  i. 11111111
+  ii. 255
+  iii. -1
+10b. C0
+  i. 11000000
+  ii. 192
+  iii. -64
+10c. 4A
+  i. 01001010
+  ii. 74
+  iii. 74

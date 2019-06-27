@@ -1,0 +1,63 @@
+1.
+fetch 20ns
+decode 10ns
+memory 10ns
+exec 20ns
+write-back 5ns
+
+0.05 GigaHertz
+
+2.
+ebx is a counter for how many loops it takes to get eax to equal 0. The value of
+ebx relative to the initial value of eax is the number of 1's in eax.
+
+3.
+0x56 34 11 cd ab cd ab
+[my_data] = 56
+[my_data+1] = 34
+[my_data+2] = 11
+[my_data+3] = cd
+[my_data+4] = ab
+[my_data+5] = cd
+[my_data+6] = ab
+
+4.
+section .data
+arr: dw 5, 50, 20, 30, 0
+d: dd 0                                         ; double-word (4 bytes)
+section .text
+global _start
+_start:
+mov ecx, arr ; store the address of the array
+xor edx, edx                                    ; set edx to 0
+xor eax, eax                                    ; set eax to 0
+loop:
+mov dx, [ecx]                                   ; set dx to value in ecx (address of the array)
+add ecx, 2                                      ; add 2 to value of ecx
+sub eax, edx                                    ; subtracts edx from eax
+jns L1 ; jump if sign bit is not set
+neg eax ; 2s complement negate
+L1:
+add [d], eax                                    ; add eax to value at [d] or at [0]
+mov eax, edx                                    ; set eax to edx
+cmp edx, 0                                      ; compares edx to 0
+jne loop                                        ; jump to loop if not equal to 0
+; end of program
+
+a) [d] = 5, 50, 80, 90, 120; The final value of [d] is 120. In terms of the initial value of the array arr, it
+    adds the absolute value of the differences of the current and next number in
+    the arr.
+b) The program knows it is has reached the end of the array when edx is 0 and
+    the program would not jump to the loop label because the last element in the
+    array is 0 and it would end the program
+c) dw - define word so each element in the array is 2 bytes
+d) dd - define double word so the size of d is 4 bytes
+e) since each element in the array is 2 bytes and there are 5 elements then
+    the array is 10 bytes large
+f) The program calculates absolute value starting at the jns L1 instruction says
+    jump if sign bit is not set meaning the number is positive, else it moves to
+    the next instruction which is neg eax, which negates eax and makes the negative
+    number in eax to a positive number
+g) The instruction is necessary at the beginning of the program because prior to
+    the start of this program we are unsure of what is in edx so resetting it to
+    zero is important for the rest of this program to work correctly.

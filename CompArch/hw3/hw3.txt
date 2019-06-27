@@ -1,0 +1,66 @@
+1.  B
+    10
+    11
+    11
+    3
+    3
+    5
+    5
+
+3a. {cmp, Rg2, Rg3, 4'b0000}
+    1110 10 11 0000
+    cmp, compares Rg2 to Rg3 by finding the difference of the two values
+    stored in the registers and if the difference is 0, then the zero flag is
+    set to 1, else the zero flag remains 0 and program counter is then incremented by 1.
+
+3b. {add, Rg0, Rg3, 4'b0000}
+    1010 00 11 0000
+    add, adds Rg0 to Rg3, modifying Rg3 and if the result is zero, then the zero
+    flag is set to 1, else the zero flag remains 0 and the program counter is
+    then incremented by 1.
+
+3c. {jz, RXX, RXX, 4'b0001}
+    0010 00 00 0001
+    jz, jump if zero, increases the program counter by the immediate value if
+    the zero flag is set to 1, else the zero flag remains 0 and program counter
+    would be incremented by 1.
+
+4a. 1011 00 01 0011
+    {addi, RXX, Rg1, 0011}
+    addi, add immediate, add the immediate value to the value in Rg1 and modifies
+    Rg1, if the result is 0 then the zero flag is set to 1, else zero flag remains
+    at 0, program counter is incremented by 1.
+
+4b. 1010 01 01 0011
+    {add, Rg1, Rg1, 0011}
+    add, add, the value of Rg1 is added to the value in Rg1, modifying Rg1, if
+    the result is 0 then the zero flag is set to 1, else zero flag remains
+    at 0, program counter incremented by 1.
+
+4c. 0000 00 00 0000
+    {jmp, RXX, RXX, 0000}
+    jmp, jump, adds the immediate value to the program counter value and ignores
+    the registers and zero flag, the zero flag remains the same.
+
+5a. Can'tell
+5b. myRom[3]
+5c. myRom[5]
+5d. myRom[6]
+
+6a. 225 times
+6b. 15 times
+6c. 0 times
+6d. infinite times
+6e. The program subtracts 1 from Rg1 until it reaches 0 then after that decrements
+    Rg0 by 1 and then reassigns Rg1 with the value of 15 and does the loop again.
+    It seems like the program is replicating the behavior of nested for loops.
+6f. void es15assemblyProgram() {
+    int Rg0, Rg1;
+    Rg0 = 15;
+    Rg1 = 15;
+    for (int i = 0; i != Rg0; Rg0--) {
+        Rg1 = 15;
+        for (int j = 0; j != Rg1; Rg1--) {
+        }
+    }
+}

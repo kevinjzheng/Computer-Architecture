@@ -1,0 +1,7 @@
+1a. eax = 0x00000400
+1b. eax = 0xaaaaeaa0
+1c. eax = 0x00aaff00
+1d. eax = 0x0000ab00
+1e. eax = 0x552a0000
+
+2. 13.8 cpi or approximately 14 cycles per instruction

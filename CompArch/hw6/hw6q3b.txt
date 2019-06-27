@@ -1,0 +1,7 @@
+sjn RgC, RgC, 1         	# sets RgC to zero
+sjn RgTemp, RgTemp, 1   	# sets RgTemp to zero
+sjn RgCount, RgCount, 1         # sets RgCount to zero
+sjn RgTemp, RgB, 1      	# sets RgTemp to negative RgB
+sjn RgCount, RgA, 1         	# sets RgCount to negative RgA
+sjn RgC, RgTemp, 1         	# subtracts RgTemp from RgC
+sjn RgCount, -1, -1      	# subtracts -1 (or adds 1 to) from RgCount

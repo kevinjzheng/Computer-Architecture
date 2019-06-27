@@ -1,0 +1,3 @@
+sjn RgTemp, RgTemp, 1   # sets RgTemp to zero
+sjn RgTemp, Rg1, 1      # sets RgTemp to negative Rg0
+sjn Rg0, RgTemp, 1      # subtracts RgTemp from Rg0 which basically adds Rg1 to Rg0

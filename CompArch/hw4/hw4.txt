@@ -1,0 +1,79 @@
+1a. The pcIncr register is used for incrementing the program counter. The value
+    stored inside the pcIncr register is the value that the program counter needs
+    to be incremented by, which is based on the operation being made. If the operation
+    being done is add, addi, sub, subi, cmp, cmpi, the pcInr will be 1 which would
+    increment the program counter to the next instruction. If the instruction is
+    jmp, then the value in the pcInr register will be the value of immediate. If
+    the instruction is jz, the value in pcIncr register will be the immediate value
+    if the zero flag is 1, else, the pcIncr will be 1. If the instruction is jnz,
+    the pcInr will be the immediate value if the zero flag is 0 and if the zero flag
+    is 1 then pcInr will be 1. Typically, pcInr would be 1.
+
+1b. The value of pcIncr for
+    cmpi: the value of pcInr is 1
+    jmp: the value of pcInr is the value in the immediate field
+    jz: the value of pcInr is the value in the immediate field if the zero flag
+    is 1, else pcInr is 1
+
+1c. dataALU and pcALU
+
+1d. The purpose of the dataALU is to perform an operation on the values stored on
+    the registers that are being passed in. These values are based on the values
+    passed in through the mBus and dstBus and the operation, addNotSub, as a result
+    outputting zVal. While the pcALU is used to perform the incrementing operations
+    whether it be adding 1 or the immediate value to the current program counter.
+    pcRes is the output of the changed program counter.
+
+2a. The program counter needs to be changed to be a 10 bit register instead of
+    being just a 4 bit register, because before the E15 only needed to be able to
+    hold up to 16 instructions but now it needs to have the capacity for up to 1024
+    instructions and log base 2 of 1024 is 10 so the register pc would have to be
+    changed to (output reg [9:0] pc).
+
+2b. The four bits for the opCode shouldn't need to change because the codes should
+    remain the same, but the 2 bits for the registers might need to change if the
+    user decided that it would be beneficial to have more registers since there
+    is a larger capacity for the number of instructions. That would depend on how
+    many registers the designer chooses to add. The immediate would need to be 10
+    bits instead of 4 bits because there are now 1024 instructions. Therefore the
+    new instruction format would have 4 bits for the opCode, 10 bits.
+
+2c. The number of bits that the register should be able to store could be 10 bits.
+    Before it was only 4 bits holding a value up to 15, but since there are now
+    1024 instructions and the immediate field is now 10 bits in length, the registers
+    could also hold up the same values so the registers (reg [9:0]) of a maximum
+    value of 1023.
+
+2d. The register of myROM needs to be changed to the number of bits required for
+    each instruction and instead of just 16 bits for instructions but [1023:0] for
+    the 1024 instructions. The register of the number of bits needed per instruction
+    also needs to be changed based on the the changes mentioned before in 2b.
+
+2e. Firstly, the pcALU will need to change to be 10 bits to account for the 1024
+    instruction capacity, before it was only 4 bits because the E15 only needed
+    to hold 16 instructions but now since there could be 1024, the ALU needs to
+    changed so that it can add to the pcIncr correctly, possible up to 1023. In
+    addition, the dataALU needs to change based on if the size of the registers
+    changed. Since the registers are of 10 bits then the ALU should also take
+    inputs of 10-bits and output a 10-bit value.
+
+3.  code
+
+4.  code
+
+5.  code
+
+i) Why did we need to replace the 1-bit operation selector of the ALU with a 2-bit operation selector?
+What specific values can this input have and what is their significance?
+  It is important to replace the 1-bit operation selector with a 2-bit selector
+  because there are more than 2 operations that can happen in the ALU, now that
+  we added mul and muli, the ALU must be able to know when to do multiplication
+  when instructed. 0 was given to subtraction, 1 is addition and 2 is now multiplication
+  so there needs to be 2-bits for the operation selector to possible select the
+  multiplication operation.
+
+ii) What would happen if we didn’t modify the store stage for our new opcodes? Would the
+multiplication operation still be be performed?
+  If we didn't modify the store stage for the new opCodes, the multiplication
+  instruction would execute but the results would not be stored into the registers
+  for future access.

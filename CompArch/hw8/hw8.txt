@@ -1,0 +1,54 @@
+1a. The another function takes 1 parameter of 4 bytes
+1b. The another function has no local variables
+1c. The another function returns the value of 0x1114C. If the parameter passed into
+    the another function is less than or equal to 0 then it would return what was
+    stored in eax, which would be 0xffffffff. But if it isn't, then the another
+    function would use the parameter passed in and perform a logical shift of 2 bits
+    which is multiplying the number by 4. So 0x4453 becomes 0x1114C. 0x1114C gets returned.
+1d. The something function takes no parameters
+1e. The something function has two local variables of 4 bytes
+1f. The something function would return what is in eax based on the stack
+    calling convention but it is unclear if it was intended that the something
+    function wanted to return what was returned from the another function because
+    eax was not changed before the something function was completed. Therefore,
+    in the code provided, the something function simply returns whatever another
+    function returns.
+
+2a. 0x44f4
+2b. 0x64
+2c. 8049015
+2d. 0x0
+2e. 0xffffff9b
+
+3a.
+  M1: 2500 MIPS
+  M2: 4000 MIPS
+3b.
+  M1: 1.6 CPI
+  M2: 1.5 CPI
+
+4a.
+def f1(m, n):
+  if (m = 0):
+    return n
+  elif (n = 1):
+    return 2**m
+  else:
+    return f1(m-1,f1(m-1,n+1))
+
+def f2(m, n):
+  if (n=0):
+    return 1
+  elif (m=0):
+    return 1
+  elif (m=1):
+    return 2n
+  else:
+    return f2(m-1, f2(m, n-1))
+
+4c.
+i. m = 1, n = 1       ---> f1: 2    f2: 2
+ii. m = 2, n = 2      ---> f1: 5    f2: 4
+iii. m = 3, n = 3     ---> f1: 10    f2: 16
+iv. m = 3, n = 4      ---> f1: 11    f2: 65536
+v. m = 4, n = 3       ---> f1: 18    f2: 65536

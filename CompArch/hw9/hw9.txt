@@ -1,0 +1,52 @@
+1. 3GHz that has 64-bit addresses, 512KB of L1 cache (excluding tags and
+valid bits) and 4MB of L2 cache (also excluding tags and valid bits). All blocks are 512 bytes. Both
+caches are direct-mapped.
+2^9 = 512
+
+512KB   2^10 1024 cache lines, index 10 bits, offset 9 bits
+4MB     2^13 8192 cache lines, index 13 bits, offset 9 bits
+
+1a. What is the size of the the tag, in bits, for each of the caches?
+    L1: 64 bit - 10 index bits - 9 offset bits = 45 bits
+    L2: 64 bit - 13 index bits - 9 offset bits = 42 bits
+1b. What is the total actual size (in bits) of each of the caches, including block storage, valid bits,
+and tags?
+    L1: 1024 caches lines * (1 valid bit + 45 bits tag + (512 * 8) block bits) = 4241408
+    L2: 8192 caches lines * (1 valid bit + 42 bits tag + (512 * 8) block bits) = 33906688
+1c. 10.6 CPI
+
+2. Assume a system with 32-bit pointers and 512-byte blocks. Its cache is 2 MB.
+2a. 4096 blocks
+2b. 9 bits
+2c. 32 - 9 = 23 bits
+2d. 4096 cache lines: 12 bits
+2e. 32 - 12 - 9: 11 bits
+2f. 4096 cache lines/ 2 = 2048 sets
+2g. log(2048) = 11 bits
+2h. 32 - 9 - 11(sets) = 12 bits
+2i. 4096 / 8 = 512 sets
+2j. log(512) = 9 bits
+2k. 32 - 9 - 9 = 14 bits
+
+3. A particular program executes a sequence of reads at the following memory byte addresses (in hex):
+40 47 50 42 81 83 85 57 46
+
+3a. direct mapped cache, block size = 4 bytes
+    40 47 50 42 81 83 85 57 46
+    CM CM CM H  M  H  CM CM H
+    Hit ratio: 3/9
+
+3b. fully associative cache, block size = 4 bytes
+    40 47 50 42 81 83 85 57 46
+    CM CM CM H  CM H  CM CM H
+    Hit ratio: 3/9
+
+3c. direct mapped cache, block size = 8 bytes
+    40 47 50 42 81 83 85 57 46
+    CM H  CM H  M  H  H  CM H
+    Hit ratio: 5/9
+
+3d. two-way set associative cache, block size = 8 bytes
+    40 47 50 42 81 83 85 57 46
+    CM H  CM H  CM H  H  CM H
+    Hit ratio: 5/9

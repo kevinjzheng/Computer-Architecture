@@ -1,0 +1,59 @@
+myROM[0] = {movi, RXX, Rg0, 4'b0000};
+myROM[1] = {lw, Rg0, Rg1, 4'b0000};
+myROM[2] = {addi, RXX, Rg1, 4'b0001};
+myROM[3] = {movi, RXX, Rg2, 4'b0001};
+myROM[4] = {lw, Rg2, Rg3, 4'b0000};
+myROM[5] = {addi, RXX, Rg3, 4'b0001};
+myROM[6] = {add, Rg1, Rg3, 4'b0000};
+--------------------------------------------------
+1a. fdes (4)
+        fdeeeees (8)
+                fdes (4)
+                    fdes (4)
+                        fdeeeees (8)
+                                fdes (4)
+                                    fdes (4)
+    4+8+4+4+8+4+4 = 36
+1b. fdes (4)
+       fdeeeees (7)
+              fdes (3)
+               fdes (1)
+                  fdeeeees (7)
+                         fdes (3)
+                            fdes (3)
+    4+7+3+1+7+3+3 = 28
+1c. image
+1d.
+myROM[0] = {movi, RXX, Rg0, 4'b0000};
+myROM[3] = {movi, RXX, Rg2, 4'b0001};
+myROM[1] = {lw, Rg0, Rg1, 4'b0000};
+myROM[4] = {lw, Rg2, Rg3, 4'b0000};
+myROM[2] = {addi, RXX, Rg1, 4'b0001};
+myROM[5] = {addi, RXX, Rg3, 4'b0001};
+myROM[6] = {add, Rg1, Rg3, 4'b0000};
+
+fdes  (4)
+ fdes   (1)
+   fdeeeees (6)
+    fdeeeees  (1)
+          fdes  (2)
+           fdes (1)
+              fdes (3)
+    4+1+6+1+2+1+3 = 18
+
+5.
+Mystery1
+a) gonyu
+b) I used ghex and objdump. First I opened mystery1 in ghex and
+noticed a patch of letters and in that area of letters I looked
+at the hex values and referred to the objdump of mystery1. Then,
+looking at the objdump I noticed a pattern where it compares byte
+by byte. I figured it was comparing letter by letter and I matched
+the hex values with the values I found in ghex and came to the
+conclusion that the password was gonyu.
+c) Within the ghex, alongside the correct letters that makeup the
+password, there are each characters that surround it, to throw off
+the user.
+
+Mystery2
+a)

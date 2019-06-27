@@ -1,0 +1,91 @@
+1a. 32 bits are needed for a pointer.
+1b. Each instruction would be 40 bits long because 4 bits are for the opcode, 2 bits
+for the name of source register and 2 bits for the name of the destination register and
+32 bits for the immediate field, totaling to 40 bit instructions.
+1c.
+/* OPCODE SRC DST IMMDATA */
+myROM[0] = {movi, RXX, Rg3, 4'b0000};
+myROM[1] = {movi, RXX, Rg0, 4'b0100};
+myROM[2] = {cmpi, RXX, Rg0, 4'b1000};
+myROM[3] = {jz, RXX, RXX, 4'b0101};
+myROM[4] = {lw, Rg0, Rg1, 4'b0000};   // reads value at address in Rg0 and puts it into Rg1
+myROM[5] = {add, Rg1, Rg3, 4'b0000};
+myROM[6] = {addi, RXX, Rg0, 4'b0001};
+myROM[7] = {jmp, RXX, Rg0, 4'b1011};
+myROM[8] = {movi, RXX, Rg0, 4'b1001};
+myROM[9] = {sw, Rg0, Rg3, 4'b0000};
+myROM[10] = {jmp, RXX, RXX, 4'b0000};
+
+Starting Rg0 at the value 4, while Rg0 doesn't have the value of 8, load the value at address
+stored in Rg0 into Rg1. In the first iteration, it would load the value in memory cell 4. Then
+it adds the value in Rg1 to Rg3 and stores the value in Rg3. Then increment the value in Rg0
+by 1. Start back the process by comparing to see if Rg0 is 8 and then repeat the steps if not.
+When Rg0 is 8 then it jumps to myROM[8] where Rg0 is assigned the value 9 and stores the value
+in Rg3 into memory cell 9. Then it ends the program.
+
+2. deref.v
+
+3. llwalk.v
+
+4. I modified the parameter list of opCodes and added the store word immediate
+swi = 4'b0111 with a value that hasn't been taken by another operation. Then, I
+added swi, to the decode part where the immediate value is stored. I also edited
+the line "mmuControl <= ((opCode == sw) | (opCode == swi));", if the opCode is
+swi then it would put that value to write on the mmuControl.
+
+5a. The increg instruction compares the value in the destination register with 0,
+if it is equal, then it would jump to microcodeBuffer[8] and increment Rg0 by 1 and
+then end the microcode. If not zero, then it compares the value in destination register
+with 1, if it is equal then it would jump to microcodeBuffer[10] and increment Rg1
+by 1 and then end the microcode. If not zero, it compares the value in destination
+register with 2 and if its equal, then it would jump to microcodeBuffer[12] and
+increment Rg2 by 1 and then end the microcode. If not zero, then it would increment
+Rg3 by 1 and then end the microcode. Overall, the increg instruction determines
+which registers gets incremented. If the destination register holds 0 then Rg0 is
+incremented if it holds 1 then Rg1 is incremented and if it holds 2 Rg2 is incremented
+if the destination holds any other value, Rg3 is incremented.
+
+5b. 17 clock cycles because the fetch takes 1 clock cycle and then there are 4
+instructions within the microcode of quadruple and each E15 instruction takes 4
+clock cycle, in total there are 17 clock cycles because 4 * 4 + 1. Each microcode
+instruction goes through all four stages of fetch, decode, exec, store so each
+microcode instruction takes 4 cycles. And before the microcode instruction is executed
+it takes one cycle to fetch the microcode. A general rule that can be applied to
+calculating the clock cycles a microcode takes is the number of instructions inside
+the microcode * 4 + 1 for the fetch cycle.
+(4 * (microcode instructions) ) + 1 = CPI of microcodes
+
+6b. E15Process_mc.v
+
+6c. I did not manage to maintain the desired semantics because in order to maintain
+those semantics of not modifying any register besides the destination register,
+it would mean that there would be no way to keep track of how many times the destination
+register needed to be added to itself. Instead, I modified the source register by
+decrementing it by 1 until it hits 0. It works as a counter for how many times to
+add to the destination register. I chose to modify the source register and not
+store that value in another register because utilizing another register to store that
+value and specifying that register within the microcode might mess up values given in
+that register. I also decided to store the result in Rg3 and after the multiplication
+is done, then put that value in Rg3 back into dst and set Rg3 back to 0. An
+architectural change that would allow the desired semantics would be to add another register
+used primarily for looping or counting. In that case, you can utilize that register as the
+counter and not have to worry about modifying src. Also adding a register for the purpose
+of storing results, and the temporary results before the multiplication process is completed
+would be stored in the result register and once the multiplying is done then the value is
+stored back into the destination register, only modifying the destination register and not
+any other general purpose register.
+
+6d. The cycles per instruction of my microcode mul instruction would be 37 cycles because
+going back to the general rule described before, there are 9 instructions within the microcode
+itself and 9 * 4 is 36 and add 1 for the fetch cycle, so 37 cycles in total.
+
+6e. If the microcode implementation of an opcode contains a microcode instruction then
+when the microcode instruction is executed it runs the fetch again and finds the microcode
+instruction and would try to execute the microcode again. That would just try to fetch and
+execute the microcode over and over again and it would not reach the end of the microcode.
+Therefore, the microcode wouldn't really work properly. It would never finish because in order
+to finish and toggle the microcodeEnable to value 0, the current instruction has to be
+end_of_microcode and the program counter would also get incremented in that block of code, but
+since the microcode wouldn't end as long as the current instruction within the microcode isn't
+end_of_microcode. Therefore, it would not complete and it would be stuck on the microcode
+instruction infinitely.
